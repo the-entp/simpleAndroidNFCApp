@@ -15,12 +15,14 @@ import java.io.File;
 import android.view.Display;
 import android.graphics.Point;
 
+import java.util.ArrayList;
+
 /**
  * Created by coursehero on 11/20/14.
  */
 public class DocumentAdapter extends ArrayAdapter<File> {
     private final Activity context;
-    private final File[] files;
+    private ArrayList<File> files;
     private BitmapFactory.Options options;
     private String[] values = new String[] { "Cut, Click, Shudder\nSocio 131\nIntroduction to Sociology", "Principality of Sealand\nPsy 101\nIntroduction to Psychology", "An Attempt to Exhaust\nCS 324\nComputer Architecture",
             "Guseppi Mercieca\nHist 45\nEuropean History" };
@@ -30,7 +32,7 @@ public class DocumentAdapter extends ArrayAdapter<File> {
         public ImageView image;
     }
 
-    public DocumentAdapter(Activity context, File[] files) {
+    public DocumentAdapter(Activity context, ArrayList<File> files) {
         super(context, R.layout.row_layout, files);
         this.context = context;
         this.files = files;
@@ -55,7 +57,7 @@ public class DocumentAdapter extends ArrayAdapter<File> {
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
-        File file = files[position];
+        File file = files.get(position);
         Log.d("int", file.getAbsolutePath() + " that is the file");
         if (file.exists()) {
             Log.d("int", "The file exists right?");

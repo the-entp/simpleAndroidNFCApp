@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
     private FileUriCallback mFileUriCallback;
     private Uri fileUri;
     private String mParentPath;
-    private File[] files;
+    private ArrayList<File> files = new ArrayList<File>();
     private FileObserver observer;
 
     /**
@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
         // Now create a new list adapter bound to the cursor.
         // SimpleListAdapter is designed for binding to a Cursor.
         final ListView listview = (ListView) findViewById(R.id.listview);
-        files = getFiles();
+        getFiles();
         final DocumentAdapter adapter = new DocumentAdapter(this, files);
         listview.setAdapter(adapter);
 
@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
             @Override
             public void onEvent(int event, String file) {
                 Log.d("int", "Something changed");
-                files = getFiles();
+                getFiles();
                 final BaseAdapter adp = (BaseAdapter) listview.getAdapter();
                 runOnUiThread(new Runnable() {
                     @Override
@@ -99,13 +99,12 @@ public class MainActivity extends Activity {
 
     }
 
-    private File[] getFiles() {
-        ArrayList<File> returnFiles = new ArrayList<File>();
+    private void getFiles() {
         File fpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File[] files = fpath.listFiles();
         for (File file : files) {
-            if (!returnFiles.contains(file) && file.getName().startsWith("thumbnail")) {
-                returnFiles.add(file);
+            if (!this.files.contains(file) && file.getName().startsWith("thumbnail")) {
+                this.files.add(file);
             }
         }
 
@@ -114,17 +113,12 @@ public class MainActivity extends Activity {
         File[] files2 = fpath2.listFiles();
         if (files2 != null) {
             for (File file : files2) {
-                if (!returnFiles.contains(file) && file.getName().startsWith("thumbnail")) {
-                    returnFiles.add(file);
+                if (!this.files.contains(file) && file.getName().startsWith("thumbnail")) {
+                    this.files.add(file);
                 }
                 Log.d("int", "These are the files " + file.getName());
             }
         }
-
-        File[] arrFile = new File[returnFiles.size()];
-        arrFile = returnFiles.toArray(arrFile);
-
-        return arrFile;
 
     }
 
@@ -160,13 +154,13 @@ public class MainActivity extends Activity {
         } else {
             Log.d("int", "Everything is enabled");
         }
-        File requestFile = files[position];
+        File requestFile = files.get(position);
         requestFile.setReadable(true, false);
         Log.d("int", "Tried to beam file " + requestFile.getPath());
         mNfcAdapter.setBeamPushUris(new Uri[]{Uri.fromFile(requestFile)}, this);
-
     }
-//
+
+
 //    private void handleViewIntent() {
 //        // Get the Intent action
 //        mIntent = getIntent();
