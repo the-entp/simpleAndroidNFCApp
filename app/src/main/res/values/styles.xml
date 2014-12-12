@@ -3,8 +3,12 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light">
         <!-- Customize your theme here. -->
-        <item name="android:background">#0aaae7</item>
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+
         <item name="android:icon">@android:color/transparent</item>
+    </style>
+    <style name="ActionBar" parent="@android:style/Widget.ActionBar">
+        <item name="android:background">#0aaae7</item>
     </style>
 
 </resources>
